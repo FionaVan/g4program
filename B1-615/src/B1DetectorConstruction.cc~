@@ -1,0 +1,367 @@
+//
+// ********************************************************************
+// * License and Disclaimer                                           *
+// *                                                                  *
+// * The  Geant4 software  is  copyright of the Copyright Holders  of *
+// * the Geant4 Collaboration.  It is provided  under  the terms  and *
+// * conditions of the Geant4 Software License,  included in the file *
+// * LICENSE and available at  http://cern.ch/geant4/license .  These *
+// * include a list of copyright holders.                             *
+// *                                                                  *
+// * Neither the authors of this software system, nor their employing *
+// * institutes,nor the agencies providing financial support for this *
+// * work  make  any representation or  warranty, express or implied, *
+// * regarding  this  software system or assume any liability for its *
+// * use.  Please see the license in the file  LICENSE  and URL above *
+// * for the full disclaimer and the limitation of liability.         *
+// *                                                                  *
+// * This  code  implementation is the result of  the  scientific and *
+// * technical work of the GEANT4 collaboration.                      *
+// * By using,  copying,  modifying or  distributing the software (or *
+// * any work based  on the software)  you  agree  to acknowledge its *
+// * use  in  resulting  scientific  publications,  and indicate your *
+// * acceptance of all terms of the Geant4 Software license.          *
+// ********************************************************************
+//
+//
+/// \file B1DetectorConstruction.cc
+/// \brief Implementation of the B1DetectorConstruction class
+
+#include "B1DetectorConstruction.hh"
+
+#include "G4RunManager.hh"
+#include "G4NistManager.hh"
+#include "G4Box.hh"
+#include "G4Cons.hh"
+#include "G4Tubs.hh" 
+#include "G4Orb.hh"
+#include "G4Sphere.hh"
+#include "G4Trd.hh"
+#include "G4LogicalVolume.hh"
+#include "G4PVPlacement.hh"
+#include "G4SystemOfUnits.hh"
+#include "G4Colour.hh"
+#include "G4VisAttributes.hh"
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+B1DetectorConstruction::B1DetectorConstruction()
+: G4VUserDetectorConstruction(),
+  fScoringVolume(0)
+{ }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+B1DetectorConstruction::~B1DetectorConstruction()
+{ }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+G4VPhysicalVolume* B1DetectorConstruction::Construct()
+{  
+  //color
+  //
+  G4VisAttributes *red = new G4VisAttributes(G4Colour(1., 0., 0.));//red
+  G4VisAttributes *green = new G4VisAttributes(G4Colour(0.0, 1.0, 0.0));//green
+  G4VisAttributes *blue = new G4VisAttributes(G4Colour(0.0, 0.0, 1.0));//blue
+  G4VisAttributes *yellow = new G4VisAttributes(G4Colour(1.0, 1.0, 0.0));//yellow
+  G4VisAttributes *white = new G4VisAttributes(G4Colour());//white
+  G4VisAttributes *cyan = new G4VisAttributes(G4Colour(0.0, 1.0, 1.0));//cyan
+  G4VisAttributes *magenta = new G4VisAttributes(G4Colour(1.0, 0.0, 1.0));//Magenta
+  G4VisAttributes * color[]={red,green,blue,yellow,cyan,magenta};
+  // Get nist material manager
+  G4NistManager* nist = G4NistManager::Instance();
+G4NistManager* nist_manager = G4NistManager::Instance(); 
+  //elements
+  G4Element* elH = nist_manager->FindOrBuildElement("H");
+ G4Element* elBe = nist_manager->FindOrBuildElement("Be");
+ G4Element* elC = nist_manager->FindOrBuildElement("C");
+ G4Element* elN = nist_manager->FindOrBuildElement("N");
+ G4Element* elO = nist_manager->FindOrBuildElement("O");
+ G4Element* elF = nist_manager->FindOrBuildElement("F");
+ G4Element* elCl = nist_manager->FindOrBuildElement("Cl");
+	G4Element* elNa = nist_manager->FindOrBuildElement("Na");
+	G4Element* elMg = nist_manager->FindOrBuildElement("Mg");
+	G4Element* elAl = nist_manager->FindOrBuildElement("Al");
+	G4Element* elSi = nist_manager->FindOrBuildElement("Si");
+	G4Element* elP = nist_manager->FindOrBuildElement("P");
+	G4Element* elS = nist_manager->FindOrBuildElement("S");
+	G4Element* elK = nist_manager->FindOrBuildElement("K");
+	G4Element* elCa = nist_manager->FindOrBuildElement("Ca");
+	G4Element* elTi = nist_manager->FindOrBuildElement("Ti");
+	G4Element* elV = nist_manager->FindOrBuildElement("V");
+	G4Element* elCr = nist_manager->FindOrBuildElement("Cr");
+	G4Element* elMn = nist_manager->FindOrBuildElement("Mn");
+	G4Element* elFe = nist_manager->FindOrBuildElement("Fe");
+	G4Element* elCo = nist_manager->FindOrBuildElement("Co");
+	G4Element* elNi = nist_manager->FindOrBuildElement("Ni");
+	G4Element* elCu = nist_manager->FindOrBuildElement("Cu");
+	G4Element* elZn = nist_manager->FindOrBuildElement("Zn");
+	G4Element* elZr = nist_manager->FindOrBuildElement("Zr");//Z40
+	G4Element* elNb = nist_manager->FindOrBuildElement("Nb");//Z41
+	G4Element* elMo = nist_manager->FindOrBuildElement("Mo");//Z42
+	G4Element* elSn = nist_manager->FindOrBuildElement("Sn");//Z50
+	G4Element* elLa = nist_manager->FindOrBuildElement("La");//Z57
+	G4Element* elCe = nist_manager->FindOrBuildElement("Ce");//Z58
+	G4Element* elW = nist_manager->FindOrBuildElement("W");//Z74
+	G4Element* elPb = nist_manager->FindOrBuildElement("Pb");//Z82
+	//SiO2: 2.32 g/cm3
+	G4Material* SiO2 = nist_manager->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
+	//H2O:1 g/cm3
+	G4Material* H2O = nist_manager->FindOrBuildMaterial("G4_WATER");
+	//Al2O3: 3.97g/cm3
+	G4Material* Al2O3 = nist_manager->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
+	//TiO2: 4.26 g/cm3
+	G4Material* TiO2 = nist_manager->FindOrBuildMaterial("G4_TITANIUM_DIOXIDE");
+	//Fe2O3: 5.2 g/cm3
+	G4Material* Fe2O3 = nist_manager->FindOrBuildMaterial("G4_FERRIC_OXIDE");
+	//CaCO3: 2.6 g/cm3
+	G4Material* CaCO3 = nist_manager->FindOrBuildMaterial("G4_CALCIUM_CARBONATE");
+       	//MgCO3: 2.958g/cm3
+	 G4Material* MgCO3 = nist_manager->FindOrBuildMaterial("G4_MAGNESIUM_CARBONATE");
+	//Na2O: 2.27 g/cm3
+	G4Material* Na2O = nist_manager->FindOrBuildMaterial("G4_SODIUM_MONOXIDE");
+
+	//K2O:2.32 g/cm3
+	G4Material* K2O = nist_manager->FindOrBuildMaterial("G4_POTASSIUM_OXIDE");
+
+	//P2O5 0.9 g/cm3
+	G4Material* P2O5 = new G4Material("P2O5", 0.9*g / cm3, 2);
+	P2O5->AddElement(elP, 2);
+	P2O5->AddElement(elO, 5);
+	//MnO2: 5.026g/cm3
+	G4Material* MnO2 = new G4Material("MnO2", 5.026*g / cm3, 2);
+	MnO2->AddElement(elMn, 1);
+	MnO2->AddElement(elO, 2);
+	//NaCl 2.16 g/cm3
+	G4Material* NaCl = new G4Material("NaCl", 2.16*g / cm3, 2);
+	P2O5->AddElement(elCl, 1);
+	P2O5->AddElement(elNa, 1);
+	//HuiYan: 2.703 g/cm3
+	G4Material *HuiYan = new G4Material("HuiYan", 2.703*g/cm3, 11);
+	HuiYan->AddMaterial(SiO2, 1.3*perCent);
+	HuiYan->AddMaterial(H2O, 0.05*perCent);
+	HuiYan->AddMaterial(Al2O3, 0.54*perCent);
+	HuiYan->AddMaterial(TiO2, 0.01*perCent);
+	HuiYan->AddMaterial(Fe2O3, 0.12*perCent);
+	HuiYan->AddMaterial(CaCO3, 96.16*perCent);
+	HuiYan->AddMaterial(MgCO3, 1.67*perCent);
+	HuiYan->AddMaterial(K2O, 0.01*perCent);
+	HuiYan->AddMaterial(P2O5, 0.11*perCent);
+	HuiYan->AddMaterial(MnO2, 0.01*perCent);
+	HuiYan->AddMaterial(Na2O, 0.02*perCent);
+  // Envelope parameters
+  //
+  G4double env_oR = 5*m, env_hz = 2*m;
+  //G4Material* env_mat = nist->FindOrBuildMaterial("HuiYan");
+   
+  // Option to switch on/off checking of volumes overlaps
+  //
+  G4bool checkOverlaps = true;
+
+  //     
+  // World
+  //
+  G4double world_oR = 6*m;
+  G4double world_hz  = 2.5*m;
+  //G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
+  
+  G4Tubs* solidWorld =    
+    new G4Tubs("World",0,world_oR,                      //its name
+	       world_hz, 0*deg, 360*deg);     //its size
+       
+  G4LogicalVolume* logicWorld =                         
+    new G4LogicalVolume(solidWorld,          //its solid
+                        HuiYan,           //its material
+                        "World");            //its name
+  // logicWorld->SetVisAttributes(white);                                              
+  G4VPhysicalVolume* physWorld = 
+    new G4PVPlacement(0,                     //no rotation
+                      G4ThreeVector(),       //at (0,0,0)
+                      logicWorld,            //its logical volume
+                      "World",               //its name
+                      0,                     //its mother  volume
+                      false,                 //no boolean operation
+                      0,                     //copy number
+                      checkOverlaps);        //overlaps checking
+               //     
+
+  //     
+  // Envelope-formation
+  //  
+  G4Tubs* solidEnv =    
+    new G4Tubs("Envelope",20.*cm,env_oR,                      //its name
+	       env_hz, 0*deg, 360*deg                   //its name
+        ); //its size
+  //formation-material
+  //kuanghuadu
+  //density=HuiYan(1-pu_precent)+pu_precent cause the fractionmass of NaCl is little 
+  G4double frac_water = 0.0; 
+  G4double frac_NaCl = 0.0;// 0.25*10(-3);0.2*10(-3)
+  G4double KHD_density=2.703*(1- frac_water)+ frac_water;
+  G4Material*  KuangHuaDu = new G4Material("KuangHuaDu", KHD_density, 1);
+  KuangHuaDu->AddMaterial(HuiYan,(1- frac_water)*perCent);
+  //KuangHuaDu->AddMaterial(H2O,(frac_water-frac_NaCl)*perCent);
+  // KuangHuaDu->AddMaterial(NaCl,frac_NaCl*perCent);
+
+  G4LogicalVolume* logicEnv =                         
+    new G4LogicalVolume(solidEnv,            //its solid
+                        KuangHuaDu,             //its material
+                        "Envelope");         //its name
+  //logicEnv->SetVisAttributes(white);             
+  new G4PVPlacement(0,                       //no rotation
+                    G4ThreeVector(),         //at (0,0,0)
+                    logicEnv,                //its logical volume
+                    "Envelope",              //its name
+                    logicWorld,              //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+  // well
+  //  
+  G4double well_oR = 20*cm, well_hz = 2.*m;
+  G4Material* well_mat = nist->FindOrBuildMaterial("G4_WATER");
+   
+  G4Tubs* solidwell =    
+    new G4Tubs("well",0,well_oR,                      //its name
+	       well_hz, 0*deg, 360*deg                   //its name
+        ); //its size
+      
+  G4LogicalVolume* logicwell =                         
+    new G4LogicalVolume(solidwell,            //its solid
+                        well_mat,             //its material
+                        "well");         //its name
+  logicwell->SetVisAttributes(white);             
+  new G4PVPlacement(0,                       //no rotation
+                    G4ThreeVector(),         //at (0,0,0)
+                    logicwell,                //its logical volume
+                    "well",              //its name
+                    logicWorld,              //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
+  
+  //     
+  // shell-waike
+  //  
+
+  //TC11
+  /*G4Material *TC11 = new G4Material("TC11",
+		4.5 * g / cm3, 10,
+		kStateSolid);
+	TC11->AddElement(elC, 0.1*perCent);
+	TC11->AddElement(elSi, 0.3*perCent);
+	TC11->AddElement(elTi, 87.6*perCent);
+	TC11->AddElement(elFe, 0.25*perCent);
+	TC11->AddElement(elMo, 3.5*perCent);
+	TC11->AddElement(elN, 0.05*perCent);
+	TC11->AddElement(elH, 0.012*perCent);
+	TC11->AddElement(elAl, 6.5*perCent);
+	TC11->AddElement(elZr, 1.5*perCent);
+	TC11->AddElement(elO, 0.15*perCent);
+  */
+	//G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
+  G4ThreeVector pos1 = G4ThreeVector(0, 0, 0);
+        
+  // Conical section shape       
+  G4double shell_oR =  3.025*cm, shell_hz = 1.*m;
+  G4double shell_iR =  0*cm;
+  G4Tubs* solidshell =    
+    new G4Tubs("shell", shell_iR,
+    shell_oR, shell_hz,
+	       0*deg,360*deg);
+  	//BuXiuGang
+	G4Material* BuXiuGang = new G4Material("BuXiuGang",
+		7.89*g / cm3,
+		5, kStateSolid);
+	BuXiuGang->AddElement(elC, 0.1*perCent);
+	BuXiuGang->AddElement(elTi, 2.0*perCent);
+	BuXiuGang->AddElement(elCr, 18.0*perCent);
+	BuXiuGang->AddElement(elFe, 70.9*perCent);
+	BuXiuGang->AddElement(elNi, 9.0*perCent);                    
+  G4LogicalVolume* logicshell =                         
+    new G4LogicalVolume(solidshell,         //its solid
+                        BuXiuGang,          //its material
+                        "shell");           //its name
+  logicshell->SetVisAttributes(yellow);    //its colour           
+  new G4PVPlacement(0,                       //no rotation
+                    pos1,                    //at position
+                    logicshell,             //its logical volume
+                    "shell",                //its name
+                    logicwell,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
+  //     
+  // scintillation_s
+  //
+  G4Isotope* IsotopeHe3 = new G4Isotope("He3", 2, 3, 3.0*g / mole);
+  G4Element* elHe3 = new G4Element("Helium-3", "He3", 1);
+  elHe3->AddIsotope(IsotopeHe3, 1);
+  G4Material *He3 = new G4Material("He3", 0.001345*g / cm3, 1, kStateGas);
+  He3->AddElement(elHe3, 100.0*perCent);
+ 
+  G4ThreeVector pos2 = G4ThreeVector(0, 0, 25*cm);      
+  G4double  scintillation_siR =  0.*cm, scintillation_soR= 1.215*cm;
+  G4double  scintillation_shz =  8.35*cm;   
+   
+  G4Tubs* solidShape2 =    
+    new G4Tubs("s_s",                      //its name
+              scintillation_siR,scintillation_soR, 
+             scintillation_shz,0*deg, 360*deg); //its size
+  G4LogicalVolume* logicss =                         
+    new G4LogicalVolume(solidShape2,         //its solid
+			He3,          //its material
+                        "s_s");  
+  G4ThreeVector pos3 = G4ThreeVector(0, 0,57*cm);      
+new G4PVPlacement(0,                       //no rotation
+                    pos2,                    //at position
+                    logicss,             //its logical volume
+                    "s_s",                //its name
+                    logicshell,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking      
+   //     
+  // scintillation_l
+  //               
+  G4LogicalVolume* logicsl =                         
+    new G4LogicalVolume(solidShape2,         //its solid
+			He3,          //its material
+                        "s_l");           //its name
+ logicshell->SetVisAttributes(yellow);    //its colour                  
+  new G4PVPlacement(0,                       //no rotation
+                    pos2,                    //at position
+                    logicsl,             //its logical volume
+                    "s_l",                //its name
+                    logicshell,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+                
+  // Set Shape2 as scoring volume
+  //
+  fScoringVolume = logicss;
+  fScoringVolume = logicsl;
+  //fScoringVolume =
+  /*void MyDetectorConstruction::ConstructSDandField() 
+{ 
+  G4MultiFunctionalDetector* myscorer = 
+    new G4MultiFunctionalDetector();
+  logicShape2->SetSensitiveDetector(myscorer);
+ 
+  
+  //auto mySD2 = new MySD2("/SD2"); 
+  //sdman->AddNewDetector(mySD2); //This will trigger automatic creation and setup of proxy 
+  //SetSensitiveDetector("LogVolName",mySD2);
+ //...
+ }*/
+  //
+  //always return the physical World
+  //
+  return physWorld;
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

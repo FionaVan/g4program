@@ -1,0 +1,8 @@
+/media/sf_Nshare/B1-531/bui/CMakeFiles/install/strip.dir
+/media/sf_Nshare/B1-531/bui/CMakeFiles/install/local.dir
+/media/sf_Nshare/B1-531/bui/CMakeFiles/install.dir
+/media/sf_Nshare/B1-531/bui/CMakeFiles/list_install_components.dir
+/media/sf_Nshare/B1-531/bui/CMakeFiles/rebuild_cache.dir
+/media/sf_Nshare/B1-531/bui/CMakeFiles/edit_cache.dir
+/media/sf_Nshare/B1-531/bui/CMakeFiles/B1.dir
+/media/sf_Nshare/B1-531/bui/CMakeFiles/exampleB1.dir
