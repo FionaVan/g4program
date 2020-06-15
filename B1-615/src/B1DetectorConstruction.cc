@@ -60,7 +60,7 @@ B1DetectorConstruction::~B1DetectorConstruction()
 G4VPhysicalVolume* B1DetectorConstruction::Construct()
 {  
   //color
-  //
+  //shine
   G4VisAttributes *red = new G4VisAttributes(G4Colour(1., 0., 0.,0.1));//red
   G4VisAttributes *green = new G4VisAttributes(G4Colour(0.0, 1.0, 0.0,0.1));//green
   G4VisAttributes *blue = new G4VisAttributes(G4Colour(0.0, 0.0, 1.0,0.2));//blue
