@@ -181,7 +181,7 @@ G4NistManager* nist_manager = G4NistManager::Instance();
   // World
   //
   G4double world_oR = 1*m;
-  G4double world_hz  = 2.5*m;
+  G4double world_hz  = 2.4*m;
 
   G4Tubs* solidWorld =    
     new G4Tubs("World",0,world_oR,                      //its name
